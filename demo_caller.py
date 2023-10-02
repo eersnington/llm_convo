@@ -43,4 +43,4 @@ def run_chat(sess):
 tws.on_session = run_chat
 
 # Outbound call
-tws.start_call("+919952062221")
+# tws.start_call("+919952062221")
