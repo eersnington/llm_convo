@@ -15,14 +15,7 @@ import audioop
 from caller_agent.audio_input import WhisperTwilioStream
 
 
-XML_MEDIA_STREAM = """
-<Response>
-    <Start>
-        <Stream name="Audio Stream" url="wss://{host}/audiostream" />
-    </Start>
-    <Pause length="60"/>
-</Response>
-"""
+XML_MEDIA_STREAM = """<Response><Start><Stream name="Audio Stream" url="wss://{host}/audiostream" /></Start><Pause length="60"/></Response>"""
 
 
 class TwilioServer:
