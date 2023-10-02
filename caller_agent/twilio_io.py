@@ -37,8 +37,8 @@ class TwilioServer:
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-        self.from_phone = os.environ["TWILIO_PHONE_NUMBER"]
         self.client = Client(account_sid, auth_token)
+        self.from_phone = self.client.incoming_phone_numbers.list()[0].phone_number
 
         @self.app.route("/audio/<key>")
         def audio(key):
