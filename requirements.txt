@@ -1,0 +1,13 @@
+black~=23.1
+gTTS~=2.3
+faster-whisper==0.9.0
+vllm==0.2.0
+ray==2.7.0
+SpeechRecognition~=3.10
+pyaudio~=0.2
+pydub~=0.25
+pyngrok~=6.1.0
+gevent~=23.9.1
+twilio~=8.8.0
+flask~=2.3
+flask_sock~=0.6
