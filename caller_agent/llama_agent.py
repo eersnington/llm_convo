@@ -1,8 +1,7 @@
 from vllm import LLM, SamplingParams
-from typing import List, Optional
+from typing import Optional
 import logging
 import time
-import os
 
 
 template = """[INST] <<SYS>>
@@ -20,9 +19,12 @@ User Input (Phone Call): {msg}
 
 
 class LlamaAgent:
-    def __init__(self, llm: LLM):
+    def __init__(self, llm: LLM, init_phrase: Optional[str] = None):
         self.llm = llm
         self.conversation_history = []
+        if init_phrase is not None:
+            self.conversation_history.append(
+                {"user_input": "", "assistant_response": init_phrase})
 
     def get_response(self, user_input: str, sampling_params: SamplingParams = SamplingParams(temperature=0.1, top_p=0.90, top_k=20, max_tokens=128)):
         history_text = "\n".join(
@@ -42,7 +44,7 @@ class LlamaAgent:
             self.conversation_history.append(conversation_entry)
             logging.info(
                 f"Generated response in {end-start:.2f}s")
-            return generated_text,
+            return generated_text
         except Exception as e:
             logging.error(
                 f"An error occurred during response generation: {str(e)}")

@@ -37,7 +37,7 @@ class TerminalInPrintOut(ChatAgent):
 
 class LlamaChatAgent(ChatAgent):
     def __init__(self, llm: LLM, init_phrase: Optional[str] = None):
-        self.llama_chat = LlamaAgent(llm)
+        self.llama_chat = LlamaAgent(llm, init_phrase=init_phrase)
         self.init_phrase = init_phrase
 
     def get_response(self, transcript: List[str]) -> str:
