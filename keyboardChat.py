@@ -8,8 +8,8 @@ from caller_agent.conversation import run_conversation
 
 
 def main():
-    agent_a = LlamaChatAgent(llm=LLM(model="TheBloke/Llama-2-7B-chat-AWQ", quantization="awq"), init_phrase="Hello?")
-    agent_b = TerminalInPrintOut()
+    agent_a = TerminalInPrintOut()
+    agent_b = LlamaChatAgent(llm=LLM(model="TheBloke/Llama-2-7B-chat-AWQ", quantization="awq"))
     run_conversation(agent_a, agent_b)
 
 

@@ -40,9 +40,10 @@ class LlamaAgent:
             conversation_entry = {"user_input": user_input,
                                   "assistant_response": generated_text}
             self.conversation_history.append(conversation_entry)
-
-            return generated_text, round(end - start, 4)
+            logging.info(
+                f"Generated response in {end-start:.2f}s")
+            return generated_text,
         except Exception as e:
             logging.error(
                 f"An error occurred during response generation: {str(e)}")
-            return "An error occurred during response generation.", 0
+            return "An error occurred during response generation."

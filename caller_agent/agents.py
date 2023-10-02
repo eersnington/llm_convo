@@ -42,7 +42,7 @@ class LlamaChatAgent(ChatAgent):
 
     def get_response(self, transcript: List[str]) -> str:
         if len(transcript) > 0:
-            response = self.llama_chat.get_response(transcript)
+            response = self.llama_chat.get_response(transcript[-1])
         else:
             response = self.init_phrase
         return response
