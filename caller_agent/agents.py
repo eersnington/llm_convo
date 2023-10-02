@@ -30,8 +30,6 @@ class MicrophoneInSpeakerTTSOut(ChatAgent):
 
 class TerminalInPrintOut(ChatAgent):
     def get_response(self, transcript: List[str]) -> str:
-        if len(transcript) > 0:
-            print(transcript[-1])
         return input(" response > ")
 
 
