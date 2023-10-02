@@ -36,7 +36,7 @@ class TwilioServer:
         self.on_session = None
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-        auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+        auth_token = os.environ["TWILIO_AUTH_TOKEN"] 
         self.client = Client(account_sid, auth_token)
         self.from_phone = self.client.incoming_phone_numbers.list()[0].phone_number
 
