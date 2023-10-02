@@ -6,7 +6,7 @@ def run_conversation(agent_a: ChatAgent, agent_b: ChatAgent):
     while True:
         text_a = agent_a.get_response(transcript)
         transcript.append(text_a)
-        print("->", text_a, transcript)
+        print("->", text_a)
         text_b = agent_b.get_response(transcript)
         transcript.append(text_b)
-        print("->", text_b, transcript)
+        print("->", text_b)
