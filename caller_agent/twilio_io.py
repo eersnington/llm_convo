@@ -44,6 +44,7 @@ class TwilioServer:
 
         @self.app.route("/incoming-voice", methods=["POST"])
         def incoming_voice():
+            logging.info(XML_MEDIA_STREAM.format(host=self.remote_host)) 
             return XML_MEDIA_STREAM.format(host=self.remote_host)
 
         @self.sock.route("/audiostream", websocket=True)
