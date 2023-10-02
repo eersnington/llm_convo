@@ -15,7 +15,7 @@ import audioop
 from caller_agent.audio_input import WhisperTwilioStream
 
 
-XML_MEDIA_STREAM = """<?xml version="1.0" encoding="UTF-8"?><Response><Start><Stream name="Audio Stream" url="wss://{host}/audiostream" /></Start></Response>"""
+XML_MEDIA_STREAM = """<?xml version="1.0" encoding="UTF-8"?><Response><Start><Say>Congratulations! You have just made your first call! Good bye.</Say></Start></Response>"""
 
 
 class TwilioServer:
