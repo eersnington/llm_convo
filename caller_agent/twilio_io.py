@@ -15,7 +15,7 @@ import audioop
 from caller_agent.audio_input import WhisperTwilioStream
 
 
-XML_MEDIA_STREAM = """<Response><Start><Stream name="Audio Stream" url="wss://{host}/audiostream" /></Start><Pause length="60"/></Response>"""
+XML_MEDIA_STREAM = """<Response><Start><Stream url="wss://{host}audiostream" /></Start></Response>"""
 
 
 class TwilioServer:
@@ -31,7 +31,7 @@ class TwilioServer:
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"] 
         self.client = Client(account_sid, auth_token)
-        self.from_phone = self.client.incoming_phone_numbers.list()[0].phone_number
+        self.from_phone = "+12512209809" # self.client.incoming_phone_numbers.list()[0].phone_number
 
         @self.app.route("/audio/<key>")
         def audio(key):
