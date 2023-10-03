@@ -40,7 +40,7 @@ class TwilioServer:
         self.client = Client(account_sid, auth_token)
         self.from_phone = self.client.incoming_phone_numbers.list()[0].phone_number
 
-        self.from_phone.update(voice_url="https://"+remote_host+"/incoming-voice")
+        self.client.incoming_phone_numbers.list()[0].update(voice_url="https://"+remote_host+"/incoming-voice")
 
         @self.app.route("/incoming-voice", methods=["POST"])
         def incoming_voice():
