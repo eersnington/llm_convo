@@ -94,9 +94,10 @@ class TwilioCallSession:
 
             data = json.loads(message)
             if data["event"] == "start":
-                logging.info("Call connected, " + str(data["start"]))
+                logging.info("Call connected, ") # + str(data["start"])
                 self._call = self.client.calls(data["start"]["callSid"])
             elif data["event"] == "media":
+                logging.info("Call media stream received.")
                 media = data["media"]
                 chunk = base64.b64decode(media["payload"])
                 if self.sst_stream.stream is not None:
