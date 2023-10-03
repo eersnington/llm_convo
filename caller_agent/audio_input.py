@@ -13,7 +13,7 @@ from faster_whisper import WhisperModel
 @functools.cache
 def get_whisper_model():
     logging.info(f"Loading whisper")
-    STTmodel = WhisperModel(size="small.en", device="cuda", compute_type="int8_float16")
+    STTmodel = WhisperModel("small.en", device="cuda", compute_type="int8_float16")
     return STTmodel
 
 
