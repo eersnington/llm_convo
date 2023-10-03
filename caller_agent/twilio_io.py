@@ -18,9 +18,11 @@ from caller_agent.audio_input import WhisperTwilioStream
 XML_MEDIA_STREAM = """
 <Response>
     <Start>
-        <Say>Hello, this is Llama.</Say>
+        <Stream name="Audio Stream" url="wss://{host}/audiostream" />
     </Start>
-</Response>"""
+    <Pause length="60"/>
+</Response>
+"""
 
 
 class TwilioServer:
@@ -34,18 +36,15 @@ class TwilioServer:
         self.on_session = None
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-        auth_token = os.environ["TWILIO_AUTH_TOKEN"] 
+        auth_token = os.environ["TWILIO_AUTH_TOKEN"]
         self.client = Client(account_sid, auth_token)
         self.from_phone = self.client.incoming_phone_numbers.list()[0].phone_number
 
-        @self.app.route("/audio/<key>")
-        def audio(key):
-            return send_from_directory(self.static_dir, str(int(key)) + ".mp3")
+        self.from_phone.update(voice_url="https://"+remote_host+"/incoming-voice")
 
         @self.app.route("/incoming-voice", methods=["POST"])
         def incoming_voice():
-            logging.info(XML_MEDIA_STREAM) 
-            return XML_MEDIA_STREAM
+            return XML_MEDIA_STREAM.format(host=self.remote_host), 200, {'Content-Type': 'text/xml'}
 
         @self.sock.route("/audiostream", websocket=True)
         def on_media_stream(ws):
@@ -57,7 +56,7 @@ class TwilioServer:
 
     def start_call(self, to_phone: str):
         self.client.calls.create(
-            twiml=XML_MEDIA_STREAM,
+            twiml=XML_MEDIA_STREAM.format(host=self.remote_host),
             to=to_phone,
             from_=self.from_phone,
         )
@@ -106,16 +105,10 @@ class TwilioCallSession:
                 logging.info("Call media stream ended.")
                 break
 
-    def get_audio_fn_and_key(self, text: str):
-        key = str(abs(hash(text)))
-        path = os.path.join(self.static_dir, key + ".mp3")
-        return key, path
-
-    def play(self, audio_key: str, duration: float):
+    def play(self, audio: str):
         self._call.update(
-            twiml=f'<Response><Play>https://{self.remote_host}/audio/{audio_key}</Play><Pause length="60"/></Response>'
+            twiml=f'<Response><Say>{audio}</Say></Response>'
         )
-        time.sleep(duration + 0.2)
 
     def start_session(self):
         self._read_ws()

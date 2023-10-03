@@ -11,42 +11,10 @@ from faster_whisper import WhisperModel
 
 
 @functools.cache
-def get_whisper_model(size: str = "small.en"):
-    logging.info(f"Loading whisper {size}")
-    STTmodel = WhisperModel(size, device="cuda", compute_type="int8_float16")
+def get_whisper_model():
+    logging.info(f"Loading whisper")
+    STTmodel = WhisperModel(size="small.en", device="cuda", compute_type="int8_float16")
     return STTmodel
-
-
-def asr_transcript(input, model):
-    segments, info = model.transcribe(input, beam_size=5)
-
-    res = []
-    for segment in segments:
-        res.append(segment.text)
-
-    return " ".join(res)
-
-
-class WhisperMicrophone:
-    def __init__(self):
-        self.audio_model = get_whisper_model()
-        self.recognizer = sr.Recognizer()
-        self.recognizer.energy_threshold = 500
-        self.recognizer.pause_threshold = 0.8
-        self.recognizer.dynamic_energy_threshold = False
-
-    def get_transcription(self) -> str:
-        with sr.Microphone(sample_rate=16000) as source:
-            logging.info("Waiting for mic...")
-            with tempfile.TemporaryDirectory() as tmp:
-                tmp_path = os.path.join(tmp, "mic.wav")
-                audio = self.recognizer.listen(source)
-                data = io.BytesIO(audio.get_wav_data())
-                audio_clip = AudioSegment.from_file(data)
-                audio_clip.export(tmp_path, format="wav")
-                result = asr_transcript(tmp_path, self.audio_model)
-            predicted_text = result
-        return predicted_text
 
 
 class _TwilioSource(sr.AudioSource):
@@ -83,6 +51,15 @@ class WhisperTwilioStream:
         self.recognizer.dynamic_energy_threshold = False
         self.stream = None
 
+    def asr_transcript(self, input : str) -> str:
+        segments, info = self.audio_model.transcribe(input, beam_size=5)
+
+        res = []
+        for segment in segments:
+            res.append(segment.text)
+
+        return " ".join(res)
+
     def get_transcription(self) -> str:
         self.stream = _QueueStream()
         with _TwilioSource(self.stream) as source:
@@ -93,7 +70,7 @@ class WhisperTwilioStream:
                 data = io.BytesIO(audio.get_wav_data())
                 audio_clip = AudioSegment.from_file(data)
                 audio_clip.export(tmp_path, format="wav")
-                result = asr_transcript(tmp_path, self.audio_model)
+                result = self.asr_transcript(tmp_path, self.audio_model)
         predicted_text = result
         self.stream = None
         return predicted_text

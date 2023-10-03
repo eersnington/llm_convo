@@ -5,6 +5,8 @@ monkey.patch_all()
 from caller_agent.agents import LlamaChatAgent, TwilioCaller
 from caller_agent.twilio_io import TwilioServer
 from caller_agent.conversation import run_conversation
+from caller_agent.llama_agent import get_llm_model
+from caller_agent.audio_input import get_whisper_model
 
 from pyngrok import ngrok
 from vllm import LLM
@@ -25,14 +27,13 @@ remote_host = ngrok_http.public_url.split("//")[1]
 logging.info(f"Starting server at {remote_host} from local:{port}, serving static content from {static_dir}")
 logging.info(f"Set call webhook to https://{remote_host}/incoming-voice")
 
-chat_llm = LLM(model="TheBloke/Llama-2-7B-chat-AWQ", quantization="awq")
+get_llm_model()
+get_whisper_model()
 
 tws = TwilioServer(remote_host=remote_host, port=port, static_dir=static_dir)
 
 tws.start()
-agent_a = LlamaChatAgent(
-    llm=chat_llm,
-)
+agent_a = LlamaChatAgent(init_phrase="Hi there, I'm Ruby. How can I help you today?")
 
 def run_chat(sess):
     agent_b = TwilioCaller(sess)
