@@ -17,7 +17,9 @@ from caller_agent.audio_input import WhisperTwilioStream
 
 XML_MEDIA_STREAM = """
 <Response>
-  <Say>Hello!</Say>
+    <Start>
+        <Say>Hello, this is Llama.</Say>
+    </Start>
 </Response>"""
 
 
@@ -55,7 +57,7 @@ class TwilioServer:
 
     def start_call(self, to_phone: str):
         self.client.calls.create(
-            twiml=XML_MEDIA_STREAM.format(host=self.remote_host),
+            twiml=XML_MEDIA_STREAM,
             to=to_phone,
             from_=self.from_phone,
         )
