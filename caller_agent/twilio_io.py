@@ -15,7 +15,7 @@ import audioop
 from caller_agent.audio_input import WhisperTwilioStream
 
 
-XML_MEDIA_STREAM = """<?xml version="1.0" encoding="UTF-8"?>
+XML_MEDIA_STREAM = """
 <Response>
   <Say>Hello!</Say>
 </Response>"""
