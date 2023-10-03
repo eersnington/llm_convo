@@ -15,7 +15,10 @@ import audioop
 from caller_agent.audio_input import WhisperTwilioStream
 
 
-XML_MEDIA_STREAM = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response><Start><Stream name=\"Audio Stream\" url=\"wss://{host}/audiostream\" /></Start><Pause length=\"6\"/></Response>"
+XML_MEDIA_STREAM = """<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say>Hello!</Say>
+</Response>"""
 
 
 class TwilioServer:
@@ -39,8 +42,8 @@ class TwilioServer:
 
         @self.app.route("/incoming-voice", methods=["POST"])
         def incoming_voice():
-            logging.info(self.remote_host) 
-            return f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response><Start><Stream name=\"Audio Stream\" url=\"wss://{self.remote_host}/audiostream\" /></Start><Pause length=\"6\"/></Response>"
+            logging.info(XML_MEDIA_STREAM) 
+            return XML_MEDIA_STREAM
 
         @self.sock.route("/audiostream", websocket=True)
         def on_media_stream(ws):
