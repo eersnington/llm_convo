@@ -51,8 +51,8 @@ class WhisperTwilioStream:
         self.recognizer.dynamic_energy_threshold = False
         self.stream = None
 
-    def asr_transcript(self, input : str) -> str:
-        segments, info = self.audio_model.transcribe(input, beam_size=5)
+    def asr_transcript(self, file_path : str) -> str:
+        segments, info = self.audio_model.transcribe(file_path, beam_size=5)
 
         res = []
         for segment in segments:
@@ -70,7 +70,7 @@ class WhisperTwilioStream:
                 data = io.BytesIO(audio.get_wav_data())
                 audio_clip = AudioSegment.from_file(data)
                 audio_clip.export(tmp_path, format="wav")
-                result = self.asr_transcript(tmp_path, self.audio_model)
+                result = self.asr_transcript(tmp_path)
         predicted_text = result
         self.stream = None
         return predicted_text
