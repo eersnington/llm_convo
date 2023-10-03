@@ -36,7 +36,7 @@ tws.start()
 agent_a = LlamaChatAgent(init_phrase="Hi there, I'm Ruby. How can I help you today?")
 
 def run_chat(sess):
-    agent_b = TwilioCaller(sess)
+    agent_b = TwilioCaller(sess, thinking_phrase="One moment.")
     while not agent_b.session.media_stream_connected():
         time.sleep(0.1)
     run_conversation(agent_a, agent_b)
