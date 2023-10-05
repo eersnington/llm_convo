@@ -4,6 +4,7 @@ from vllm import LLM
 
 from caller_agent.llama_agent import LlamaAgent
 from caller_agent.twilio_io import TwilioCallSession
+from caller_agent.audio_output import TTSClient, GoogleTTS
 
 
 class ChatAgent(ABC):
@@ -34,12 +35,16 @@ class LlamaChatAgent(ChatAgent):
 
 
 class TwilioCaller(ChatAgent):
-    def __init__(self, session: TwilioCallSession, thinking_phrase: str = "Okay."):
+    def __init__(self, session: TwilioCallSession, tts: Optional[TTSClient] = None, thinking_phrase: str = "OK"):
         self.session = session
+        self.speaker = tts or GoogleTTS()
         self.thinking_phrase = thinking_phrase
 
     def _say(self, text: str):
-        self.session.play(text)
+        key, tts_fn = self.session.get_audio_fn_and_key(text)
+        self.speaker.text_to_mp3(text, output_fn=tts_fn)
+        duration = self.speaker.get_duration(tts_fn)
+        self.session.play(key, duration)
 
     def get_response(self, transcript: List[str]) -> str:
         if len(transcript) > 0:
