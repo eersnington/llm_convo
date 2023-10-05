@@ -49,7 +49,4 @@ class TTSClient(ABC):
 
 class GoogleTTS(TTSClient):
     def text_to_mp3(self, text: str, output_fn: Optional[str] = None) -> str:
-        tmp_fn = output_fn or os.path.join(tempfile.mkdtemp(), "tts.mp3")
-        tts = gTTS(text, lang="en")
-        tts.save(tmp_fn)
-        return tmp_fn
+        return f"<Say>{text}</Say>"

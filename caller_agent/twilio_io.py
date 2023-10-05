@@ -119,8 +119,9 @@ class TwilioCallSession:
         return key, path
 
     def play(self, audio_key: str, duration: float):
+        logging.info(f"Playing audio {audio_key} for {duration:.2f}s")
         self._call.update(
-            twiml=f'<Response><Play>https://{self.remote_host}/audio/{audio_key}</Play><Pause length="60"/></Response>'
+            twiml=f'<Response>{audio_key}<Pause length="60"/></Response>'
         )
         time.sleep(duration + 0.2)
 
