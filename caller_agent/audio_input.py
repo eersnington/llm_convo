@@ -13,7 +13,8 @@ from faster_whisper import WhisperModel
 @functools.cache
 def get_whisper_model():
     logging.info(f"Loading whisper")
-    STTmodel = WhisperModel("small.en", device="cuda", compute_type="int8_float16")
+    STTmodel = WhisperModel("small.en", device="cuda",
+                            compute_type="int8_float16")
     return STTmodel
 
 
@@ -51,7 +52,7 @@ class WhisperTwilioStream:
         self.recognizer.dynamic_energy_threshold = False
         self.stream = None
 
-    def asr_transcript(self, file_path : str) -> str:
+    def asr_transcript(self, file_path: str) -> str:
         segments, info = self.audio_model.transcribe(file_path, beam_size=5)
 
         res = []
@@ -65,12 +66,15 @@ class WhisperTwilioStream:
         with _TwilioSource(self.stream) as source:
             logging.info("Waiting for twilio caller...")
             with tempfile.TemporaryDirectory() as tmp:
+                logging.info("Recording audio...")
                 tmp_path = os.path.join(tmp, "mic.wav")
                 audio = self.recognizer.listen(source)
                 data = io.BytesIO(audio.get_wav_data())
                 audio_clip = AudioSegment.from_file(data)
                 audio_clip.export(tmp_path, format="wav")
+                logging.info("Transcribing start...")
                 result = self.asr_transcript(tmp_path)
+                logging.info("Transcribing end...")
         predicted_text = result
         self.stream = None
         return predicted_text

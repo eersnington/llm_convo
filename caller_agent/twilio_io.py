@@ -38,9 +38,11 @@ class TwilioServer:
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
         self.client = Client(account_sid, auth_token)
-        self.from_phone = self.client.incoming_phone_numbers.list()[0].phone_number
+        self.from_phone = self.client.incoming_phone_numbers.list()[
+            0].phone_number
 
-        self.client.incoming_phone_numbers.list()[0].update(voice_url="https://"+remote_host+"/incoming-voice")
+        self.client.incoming_phone_numbers.list()[0].update(
+            voice_url="https://"+remote_host+"/incoming-voice")
 
         @self.app.route("/incoming-voice", methods=["POST"])
         def incoming_voice():
@@ -48,9 +50,11 @@ class TwilioServer:
 
         @self.sock.route("/audiostream", websocket=True)
         def on_media_stream(ws):
-            session = TwilioCallSession(ws, self.client, remote_host=self.remote_host, static_dir=self.static_dir)
+            session = TwilioCallSession(
+                ws, self.client, remote_host=self.remote_host, static_dir=self.static_dir)
             if self.on_session is not None:
-                thread = threading.Thread(target=self.on_session, args=(session,))
+                thread = threading.Thread(
+                    target=self.on_session, args=(session,))
                 thread.start()
             session.start_session()
 
@@ -91,10 +95,9 @@ class TwilioCallSession:
             if message is None:
                 logging.warn("Call media stream closed.")
                 break
-
             data = json.loads(message)
             if data["event"] == "start":
-                logging.info("Call connected, ") # + str(data["start"])
+                logging.info("Call connected, " + str(data["start"]))
                 self._call = self.client.calls(data["start"]["callSid"])
             elif data["event"] == "media":
                 logging.info("Call media stream received.")
