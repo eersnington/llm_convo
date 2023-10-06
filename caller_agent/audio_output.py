@@ -11,13 +11,14 @@ import wave
 
 class TTSClient(ABC):
     @abstractmethod
-    def text_to_mp3(self, text: str, output_fn: Optional[str] = None) -> str:
+    def text_to_mp3(self, text: str) -> str:
         pass
 
     def play_text(self, text: str) -> str:
         tmp_mp3 = self.text_to_mp3(text)
         tmp_wav = tmp_mp3.replace(".mp3", ".wav")
-        subprocess.call(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", tmp_mp3, tmp_wav])
+        subprocess.call(["ffmpeg", "-hide_banner", "-loglevel",
+                        "error", "-y", "-i", tmp_mp3, tmp_wav])
 
         wf = wave.open(tmp_wav, "rb")
         audio = pyaudio.PyAudio()
@@ -35,7 +36,6 @@ class TTSClient(ABC):
 
         stream.close()
         audio.terminate()
-
 
 
 class GoogleTTS(TTSClient):
