@@ -18,6 +18,7 @@ User Input (Phone Call): {msg}
 [/INST]
 """
 
+
 @functools.cache
 def get_llm_model():
     logging.info(f"Loading Llama LLM")
@@ -31,7 +32,7 @@ class LlamaAgent:
         self.conversation_history = []
         if init_phrase is not None:
             self.conversation_history.append(
-                {"user_input": "", "assistant_response": init_phrase})
+                {"user_input": "**NO MESSAGE FROM USER**", "assistant_response": init_phrase})
 
     def get_response(self, user_input: str, sampling_params: SamplingParams = SamplingParams(temperature=0.1, top_p=0.90, top_k=20, max_tokens=128)) -> str:
         history_text = "\n".join(

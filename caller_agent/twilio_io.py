@@ -113,11 +113,6 @@ class TwilioCallSession:
                 logging.info("Call media stream ended.")
                 break
 
-    def get_audio_fn_and_key(self, text: str):
-        key = str(abs(hash(text)))
-        path = os.path.join(self.static_dir, key + ".mp3")
-        return key, path
-
     def play(self, audio_key: str):
         logging.info(f"Playing audio {audio_key}")
         self._call.update(

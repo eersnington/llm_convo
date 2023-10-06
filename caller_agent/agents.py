@@ -35,18 +35,15 @@ class LlamaChatAgent(ChatAgent):
 
 
 class TwilioCaller(ChatAgent):
-    def __init__(self, session: TwilioCallSession, tts: Optional[TTSClient] = None, thinking_phrase: str = "OK"):
+    def __init__(self, session: TwilioCallSession, tts: Optional[TTSClient] = None):
         self.session = session
         self.speaker = tts or GoogleTTS()
-        self.thinking_phrase = thinking_phrase
 
     def _say(self, text: str):
-        # key, tts_fn = self.session.get_audio_fn_and_key(text)
         self.session.play(self.speaker.text_to_mp3(text))
 
     def get_response(self, transcript: List[str]) -> str:
         if len(transcript) > 0:
             self._say(transcript[-1])
         resp = self.session.sst_stream.get_transcription()
-        self._say(self.thinking_phrase)
         return resp
