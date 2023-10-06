@@ -36,17 +36,8 @@ class TTSClient(ABC):
         stream.close()
         audio.terminate()
 
-    def get_duration(self, audio_fn: str) -> float:
-        popen = subprocess.Popen(
-            ["ffprobe", "-hide_banner", "-loglevel", "error", "-show_entries", "format=duration", "-i", audio_fn],
-            stdout=subprocess.PIPE,
-        )
-        popen.wait()
-        output = popen.stdout.read().decode("utf-8")
-        duration = float(output.split("=")[1].replace("\r\n", "\n").split("\n")[0])
-        return duration
 
 
 class GoogleTTS(TTSClient):
-    def text_to_mp3(self, text: str, output_fn: Optional[str] = None) -> str:
+    def text_to_mp3(self, text: str) -> str:
         return f"<Say>{text}</Say>"

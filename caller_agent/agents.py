@@ -41,10 +41,8 @@ class TwilioCaller(ChatAgent):
         self.thinking_phrase = thinking_phrase
 
     def _say(self, text: str):
-        key, tts_fn = self.session.get_audio_fn_and_key(text)
-        self.speaker.text_to_mp3(text, output_fn=tts_fn)
-        duration = self.speaker.get_duration(tts_fn)
-        self.session.play(key, duration)
+        # key, tts_fn = self.session.get_audio_fn_and_key(text)
+        self.session.play(self.speaker.text_to_mp3(text))
 
     def get_response(self, transcript: List[str]) -> str:
         if len(transcript) > 0:
