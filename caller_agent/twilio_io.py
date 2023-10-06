@@ -118,7 +118,7 @@ class TwilioCallSession:
         path = os.path.join(self.static_dir, key + ".mp3")
         return key, path
 
-    def play(self, audio_key: str, duration: float):
+    def play(self, audio_key: str):
         logging.info(f"Playing audio {audio_key}")
         self._call.update(
             twiml=f'<Response>{audio_key}<Pause length="60"/></Response>'
