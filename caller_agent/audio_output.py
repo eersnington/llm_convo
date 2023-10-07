@@ -7,6 +7,7 @@ import subprocess
 from gtts import gTTS
 import pyaudio
 import wave
+import logging
 
 
 class TTSClient(ABC):
@@ -41,6 +42,7 @@ class TTSClient(ABC):
 class GoogleTTS(TTSClient):
     def text_to_mp3(self, text: str) -> str:
         if text.__contains__("<Hangup/>"):
+            logging.info("Hangup detected, removing from response")
             text = text.replace("<Hangup/>", "")
             return f"<Say>{text}</Say><Hangup/>"
         return f"<Say>{text}</Say>"
