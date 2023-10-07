@@ -24,7 +24,7 @@ User Input (Phone Call): {msg}
 @functools.cache
 def get_llm_model():
     logging.info(f"Loading Llama LLM")
-    llm = LLM(model="TheBloke/Llama-2-7B-chat-AWQ", quantization="awq")
+    llm = LLM(model="TheBloke/Llama-2-13B-chat-AWQ", quantization="awq")
     return llm
 
 
