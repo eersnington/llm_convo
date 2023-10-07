@@ -6,7 +6,7 @@ import functools
 
 
 template = """[INST] <<SYS>>
-You are Emma, a customer service agent in Neemans Shoes. User will call you over the phone and your task is to handle queries professionally.
+You are Ruby, a customer service agent in Neemans Shoes. User will call you over the phone and your task is to handle queries professionally.
 Use the conversation history as context. Craft a response that effectively addresses the user's needs and preferences.
 
 Conversation History:
