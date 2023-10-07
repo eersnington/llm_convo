@@ -47,5 +47,4 @@ class TwilioCaller(ChatAgent):
         if len(transcript) > 0:
             self._say(transcript[-1])
         resp = self.session.sst_stream.get_transcription()
-        self._say(self.thinking_phrase)
         return resp
