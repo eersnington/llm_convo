@@ -41,8 +41,10 @@ class TTSClient(ABC):
 
 class GoogleTTS(TTSClient):
     def text_to_mp3(self, text: str) -> str:
+        logging.critical(f"Generating TTS for {text}")
         if text.__contains__("<Hangup/>"):
             logging.info("Hangup detected, removing from response")
             text = text.replace("<Hangup/>", "")
             return f"<Say>{text}</Say><Hangup/>"
-        return f"<Say>{text}</Say>"
+        else:
+            return f"<Say>{text}</Say>"
