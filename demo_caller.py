@@ -33,7 +33,7 @@ get_whisper_model()
 tws = TwilioServer(remote_host=remote_host, port=port, static_dir=static_dir)
 
 tws.start()
-agent_a = LlamaChatAgent(init_phrase="Hi there, I'm Ruby from Neemans Shoes. How can I help you today?")
+agent_a = LlamaChatAgent(init_phrase="Hi there, I'm Ruby from Zapline AI. Would you like to know more about Zapline AI?")
 
 def run_chat(sess):
     agent_b = TwilioCaller(sess, thinking_phrase="One moment please.")
@@ -44,4 +44,4 @@ def run_chat(sess):
 tws.on_session = run_chat
 
 # Outbound call
-# tws.start_call("+919952062221")
+tws.start_call("+918610655132")
