@@ -40,4 +40,7 @@ class TTSClient(ABC):
 
 class GoogleTTS(TTSClient):
     def text_to_mp3(self, text: str) -> str:
+        if text.__contains__("<Hangup/>"):
+            text = text.replace("<Hangup/>", "")
+            return f"<Say>{text}</Say><Hangup/>"
         return f"<Say>{text}</Say>"
