@@ -4,7 +4,7 @@ from vllm import LLM
 
 from caller_agent.llama_agent import LlamaAgent
 from caller_agent.twilio_io import TwilioCallSession
-from caller_agent.audio_output import TTSClient, GoogleTTS
+from caller_agent.audio_output import TTSClient, WhisperTTS
 
 
 class ChatAgent(ABC):
@@ -37,7 +37,7 @@ class LlamaChatAgent(ChatAgent):
 class TwilioCaller(ChatAgent):
     def __init__(self, session: TwilioCallSession, tts: Optional[TTSClient] = None, thinking_phrase: str = "Okay"):
         self.session = session
-        self.speaker = tts or GoogleTTS()
+        self.speaker = tts or WhisperTTS()
         self.thinking_phrase = thinking_phrase
 
     def _say(self, text: str):
